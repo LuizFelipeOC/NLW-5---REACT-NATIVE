@@ -15,14 +15,32 @@ import fontes from '../styles/fonts';
 import userImg from '../assets/pp.png';
 import { color } from 'react-native-reanimated';
 import fonts from '../styles/fonts';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
+import { Colors } from 'react-native/Libraries/NewAppScreen';   
+import { useEffect, useState } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function Header(){
+
+    const [username, setUserName] = useState<string>();
+
+    useEffect(() => {
+
+        async function loadStorageUserName(){
+
+            const user = await AsyncStorage.getItem('@plantmanager:user')
+            setUserName(user || '' );
+
+        }
+
+        loadStorageUserName();
+
+    },[])
+
     return(
         <SafeAreaView style={style.container}>
             <View>
                 <Text style={style.greeting}>Olá,</Text>
-                <Text style={style.userName}>Luiz</Text>
+                <Text style={style.userName}>{username}</Text>
             </View>
 
             <Image 
